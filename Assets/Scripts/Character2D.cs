@@ -33,23 +33,27 @@ public class Character2D : MonoBehaviour
   {
       transform.Translate(Vector2.right * Axis.x * moveSpeed * Time.deltaTime);
       spr.flipX = Flip;
+       if (jumpButton && IsGrounding)
+            {
+                anim.SetTrigger("jump");
+                rb2D.AddForce(Vector2.up * jumpforce, ForceMode2D.Impulse);
+                
+            }
      
      
   }
     //para las cosas físicas
     void FixedUpdate()
     {
-        if (jumpButton && IsGrounding)
-            {
-                rb2D.AddForce(Vector2.up * jumpforce, ForceMode2D.Impulse);
-                anim.SetTrigger("jump");
-            }
+        anim.SetFloat("velocityY", rb2D.velocity.y);
+        anim.SetBool("grounding", IsGrounding);
+       
     }
 
   void LateUpdate()
   {
       anim.SetFloat("moveX",Mathf.Abs(Axis.x));
-      anim.SetBool("grounding", IsGrounding);
+      
   }
 
   Vector2 Axis
